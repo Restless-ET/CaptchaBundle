@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use Gregwar\CaptchaBundle\Validator\CaptchaValidator;
 use Gregwar\CaptchaBundle\Generator\CaptchaGenerator;
@@ -51,10 +52,10 @@ class CaptchaType extends AbstractType
      */
     public function __construct(SessionInterface $session, CaptchaGenerator $generator, TranslatorInterface $translator, $options)
     {
-        $this->session      = $session;
-        $this->generator    = $generator;
+        $this->session    = $session;
+        $this->generator  = $generator;
         $this->translator = $translator;
-        $this->options      = $options;
+        $this->options    = $options;
     }
 
     /**
@@ -143,13 +144,21 @@ class CaptchaType extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return TextType::class;
     }
 
     /**
      * @return string
      */
     public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlockPrefix()
     {
         return 'captcha';
     }
